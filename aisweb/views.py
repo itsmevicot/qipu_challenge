@@ -146,29 +146,37 @@ def get_aerodrome_info(request):
     context = {}
 
     if request.method == 'POST':
-        icaocode = request.POST.get('icaocode')
+        icaocodes_input = request.POST.get('icaocode')
+        icaocodes = [code.strip() for code in icaocodes_input.split(',')]
 
-        # Pega informações do nascer e pôr do sol
-        sun_info = get_sunrise_sunset_info(icaocode)
-        if "error" in sun_info:
-            context["error"] = sun_info["error"]
-            return render(request, 'aisweb/aerodrome.html', context)
-        context.update(sun_info)
+        all_sun_info = []
+        all_metar_taf_info = []
+        all_cards = []
 
-        # Pega informações METAR e TAF
-        metar_taf_info = get_metar_taf(icaocode)
-        if "error" in metar_taf_info:
-            context["error"] = metar_taf_info["error"]
-            return render(request, 'aisweb/aerodrome.html', context)
-        context.update(metar_taf_info)
+        for icaocode in icaocodes:
+            # Pega informações de nascer e pôr do sol
+            sun_info = get_sunrise_sunset_info(icaocode)
+            if "error" in sun_info:
+                context["error"] = sun_info["error"]
+                return render(request, 'aisweb/aerodrome.html', context)
+            all_sun_info.append(sun_info)
 
-        # Pega informações dos cartões aeronáuticos
-        cards = get_card_info(icaocode)
-        if "error" in cards:
-            context["error"] = cards["error"]
-            return render(request, 'aisweb/aerodrome.html', context)
-        context['cards'] = cards
-        context['card_count'] = len(cards)
+            # Pega informações METAR e TAF
+            metar_taf_info = get_metar_taf(icaocode)
+            if "error" in metar_taf_info:
+                context["error"] = metar_taf_info["error"]
+                return render(request, 'aisweb/aerodrome.html', context)
+            all_metar_taf_info.append(metar_taf_info)
+
+            # Pega informações do cartão
+            cards = get_card_info(icaocode)
+            if "error" in cards:
+                context["error"] = cards["error"]
+                return render(request, 'aisweb/aerodrome.html', context)
+            all_cards.append(cards)
+
+        combined_data = zip(all_sun_info, all_metar_taf_info, all_cards)
+        context['combined_data'] = combined_data
 
         return render(request, 'aisweb/aerodrome.html', context)
 

@@ -1,4 +1,13 @@
 /* Style for the form */
+.icaocode-title {
+    font-size: 24px;
+    color: rgb(16, 15, 15);
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .search-form {
     display: flex;
     justify-content: center;
@@ -51,3 +60,12 @@
 .section-title {
     margin-top: 20px;
 }
+
+.section-separator {
+    border: 0;
+    border-top: 20px solid #888;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 20px solid #888;
+}
+
