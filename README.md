@@ -2,7 +2,7 @@
 
 ## Descrição do desafio
 O desafio consistiu em dois exercícios:
-* Criação de uma lista encadeada (linked list) em Python.
+* Criação de uma [lista encadeada (linked list)](linked_list.py) em Python.
 * Criação de um crawler para capturar informações da [AISWEB - Informações Aeronáuticas do Brasil.](https://aisweb.decea.mil.br/)
 
 ## Configuração do projeto
