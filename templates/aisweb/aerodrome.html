@@ -1,0 +1,90 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="icaocode">ICAO Code:</label>
+    <input type="text" id="icaocode" name="icaocode" required>
+    <button type="submit">Retrieve</button>
+</form>
+
+<!-- Error Feedback Section -->
+{% if error %}
+<div style="color: red; margin-top: 20px; border: 1px solid red; padding: 10px; background-color: #ffe6e6;">
+    <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+
+{% if not error %}
+<!-- Sunrise and Sunset Info -->
+<h2>Information for ICAO: {{ icaocode }}</h2>
+<table border="1" style="width: 60%; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>Código ICAO</th>
+            <th>Data</th>
+            <th>Dia da Semana</th>
+            <th>Nascer do Sol</th>
+            <th>Pôr do Sol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ icaocode }}</td>
+            <td>{{ date }}</td>
+            <td>{{ day_of_week }}</td>
+            <td>{{ sunrise }}</td>
+            <td>{{ sunset }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- METAR and TAF Info -->
+<h2>METAR and TAF Information</h2>
+<table border="1" style="width: 60%; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>METAR</td>
+            <td>{{ METAR }}</td>
+        </tr>
+        <tr>
+            <td>TAF</td>
+            <td>{{ TAF }}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<!-- Cards Information -->
+<h2>Cartas Aeronáuticas - Total: {{ card_count }}</h2>
+<table border="1" style="width: 100%; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Localidade</th>
+            <th>Tipo</th>
+            <th>Carta</th>
+            <th>Amdt</th>
+            <th>Data de Efetivação</th>
+            <th>Uso</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for card in cards %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ card.localidade }}</td>
+            <td>{{ card.tipo }}</td>
+            <td>{{ card.carta }}</td>
+            <td>{{ card.amdt }}</td>
+            <td>{{ card.data_efetivacao }}</td>
+            <td>{{ card.uso }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
