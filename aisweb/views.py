@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
+
+
+def home(request):
+    return redirect('aisweb:aerodrome')
 
 
 def get_busca_value():
