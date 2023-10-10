@@ -1,21 +1,24 @@
-<form method="post">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/aisweb/aisweb.css' %}">
+
+<form method="post" class="search-form">
     {% csrf_token %}
-    <label for="icaocode">ICAO Code:</label>
-    <input type="text" id="icaocode" name="icaocode" required>
-    <button type="submit">Retrieve</button>
+    <label for="icaocode" class="label">Código ICAO</label>
+    <input type="text" id="icaocode" name="icaocode" required class="input">
+    <button type="submit" class="btn">Pesquisar</button>
 </form>
 
 <!-- Error Feedback Section -->
 {% if error %}
-<div style="color: red; margin-top: 20px; border: 1px solid red; padding: 10px; background-color: #ffe6e6;">
+<div class="error-box">
     <strong>Error:</strong> {{ error }}
 </div>
 {% endif %}
 
 {% if not error %}
 <!-- Sunrise and Sunset Info -->
-<h2>Information for ICAO: {{ icaocode }}</h2>
-<table border="1" style="width: 60%; margin-top: 20px;">
+<h2 class="section-title">Nascer/Pôr do Sol</h2>
+<table class="info-table">
     <thead>
         <tr>
             <th>Código ICAO</th>
@@ -37,12 +40,12 @@
 </table>
 
 <!-- METAR and TAF Info -->
-<h2>METAR and TAF Information</h2>
-<table border="1" style="width: 60%; margin-top: 20px;">
+<h2 class="section-title">METAR e TAF</h2>
+<table class="info-table">
     <thead>
         <tr>
-            <th>Type</th>
-            <th>Information</th>
+            <th>Tipo</th>
+            <th>Informação</th>
         </tr>
     </thead>
     <tbody>
@@ -57,11 +60,9 @@
     </tbody>
 </table>
 
-
-
 <!-- Cards Information -->
-<h2>Cartas Aeronáuticas - Total: {{ card_count }}</h2>
-<table border="1" style="width: 100%; margin-top: 20px;">
+<h2 class="section-title">Cartas Aeronáuticas</h2>
+<table class="info-table full-width">
     <thead>
         <tr>
             <th>#</th>
@@ -88,3 +89,4 @@
     </tbody>
 </table>
 {% endif %}
+

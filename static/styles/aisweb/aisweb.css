@@ -1,0 +1,53 @@
+/* Style for the form */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.label, .input {
+    margin-right: 10px;
+}
+
+.btn {
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: #FFF;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Style for error feedback */
+.error-box {
+    color: red;
+    margin-top: 20px;
+    border: 1px solid red;
+    padding: 10px;
+    background-color: #ffe6e6;
+}
+
+/* Style for tables */
+.info-table {
+    width: 60%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.info-table.full-width {
+    width: 100%;
+}
+
+.info-table th, .info-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.section-title {
+    margin-top: 20px;
+}
