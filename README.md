@@ -40,7 +40,10 @@ O desafio consistiu em dois exercícios:
 2. Execute o comando:
 > from django.core.management.utils import get_random_secret_key
 
-3. Copie a saída do comando e cole no arquivo local_settings.py ou nas variáveis de ambiente.
+3. Chame a função:
+> get_random_secret_key()
+
+4. Copie a saída do comando e cole no arquivo local_settings.py ou nas variáveis de ambiente.
 
 Com o banco configurado, aplique as migrações do projeto:
 > python manage.py migrate
@@ -58,14 +61,15 @@ Certifique-se de que o arquivo .env e o local_settings.py estejam configurados c
 Ao iniciar o projeto, você poderá acessar a página inicial em http://localhost:8000/. Nela, você encontrará um formulário para inserir o código ICAO de um aeroporto. 
 A lista de códigos ICAO completa pode ser encontrada na [Wikipedia](https://pt.wikipedia.org/wiki/Lista_de_aeroportos_do_Brasil_por_c%C3%B3digo_aeroportu%C3%A1rio_ICAO).
 Ao submeter o formulário, caso seja um código válido e existente, o scraper irá trazer algumas informações do aeroporto. Caso contrário, um erro é informado ao usuário.
+É possível informar mais de um código ICAO por vez, separados por vírgula.
 
 São informados:
-* Código ICAO digitado
+* Código ICAO
 * Data 
 * Dia da semana
 * Hora do nascer do sol
 * Hora do pôr do sol
-* METAR e TAF. Consulte [aqui](https://ajuda.decea.mil.br/base-de-conhecimento/como-decodificar-o-metar-e-o-speci/) para traduzir essa informação.
+* METAR e TAF. Consulte [aqui](https://ajuda.decea.mil.br/base-de-conhecimento/como-decodificar-o-metar-e-o-speci/) para aprender a traduzir essas informações.
 * Cartas aeronáuticas com localidade, tipo, carta, amdt, data da efetivação e uso
 
 ### Observação
