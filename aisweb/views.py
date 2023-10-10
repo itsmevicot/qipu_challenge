@@ -11,15 +11,15 @@ def home(request):
 def get_busca_value():
     try:
         response = requests.get('https://aisweb.decea.mil.br/?i=aerodromos&p=sol')
-        response.raise_for_status()  # Raise an error for bad responses
+        response.raise_for_status()  # Levanta um erro para bad requests
 
         soup = BeautifulSoup(response.content, 'html.parser')
         return soup.find('input', {'name': 'busca'})['value']
 
     except requests.RequestException:
-        return {"error": "There was an issue connecting to the website while fetching busca value."}
+        return {"error": "Houve um problema ao conectar ao site ao buscar o valor de busca."}
     except Exception as e:
-        return {"error": f"An error occurred while fetching busca value: {str(e)}"}
+        return {"error": f"Ocorreu um erro ao buscar o valor de busca: {str(e)}"}
 
 
 def get_sunrise_sunset_info(icaocode):
@@ -33,7 +33,7 @@ def get_sunrise_sunset_info(icaocode):
             'busca': busca_value
         }
         response = requests.post('https://aisweb.decea.mil.br/?i=aerodromos&p=sol', data=data)
-        response.raise_for_status()  # Raise an error for bad responses
+        response.raise_for_status()  # Levanta um erro para bad requests
 
         soup = BeautifulSoup(response.content, 'html.parser')
         table = soup.find('table', class_='table table-striped mt-4')
@@ -49,12 +49,12 @@ def get_sunrise_sunset_info(icaocode):
             }
 
             return context
-        return {"error": "No data found for the provided ICAO code."}
+        return {"error": "Nenhum dado encontrado para o código ICAO fornecido."}
 
     except requests.RequestException:
-        return {"error": "There was an issue connecting to the website."}
+        return {"error": "Houve um problema ao conectar ao site."}
     except Exception as e:
-        return {"error": f"An error occurred: {str(e)}"}
+        return {"error": f"Ocorreu um erro: {str(e)}"}
 
 
 def get_card_info(icaocode_string):
@@ -80,7 +80,7 @@ def get_card_info(icaocode_string):
             table = soup.find('table', {'id': 'datatable'})
 
             if table:
-                rows = table.find_all('tr')[1:]  # Exclude header row
+                rows = table.find_all('tr')[1:]  # Exclui a linha do cabeçalho
                 for row in rows:
                     cols = row.find_all('td')
 
@@ -104,9 +104,9 @@ def get_card_info(icaocode_string):
         return cards
 
     except requests.RequestException:
-        return {"error": "There was an issue connecting to the website while fetching card info."}
+        return {"error": "Houve um problema ao conectar ao site ou ao buscar informações dos cartões aeronáuticos."}
     except Exception as e:
-        return {"error": f"An error occurred while fetching card info: {str(e)}"}
+        return {"error": f"Ocorreu um erro ao buscar informações do cartão aeronáutico: {str(e)}"}
 
 
 def get_metar_taf(icaocode):
@@ -117,13 +117,13 @@ def get_metar_taf(icaocode):
 
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Get METAR
+        # Pega o METAR
         metar_tag = soup.find('h5', text="METAR")
         metar = None
         if metar_tag:
             metar = metar_tag.find_next('p').text.strip()
 
-        # Get TAF
+        # Pega o TAF
         taf_tag = soup.find('h5', text="TAF")
         taf = None
         if taf_tag:
@@ -137,9 +137,9 @@ def get_metar_taf(icaocode):
         return context
 
     except requests.RequestException:
-        return {"error": "There was an issue connecting to the website while fetching METAR/TAF info."}
+        return {"error": "Houve um problema ao buscar pelo METAR/TAF."}
     except Exception as e:
-        return {"error": f"An error occurred while fetching METAR/TAF info: {str(e)}"}
+        return {"error": f"Ocorreu um erro ao buscar informações METAR/TAF: {str(e)}"}
 
 
 def get_aerodrome_info(request):
@@ -148,21 +148,21 @@ def get_aerodrome_info(request):
     if request.method == 'POST':
         icaocode = request.POST.get('icaocode')
 
-        # Get sunrise and sunset info
+        # Pega informações do nascer e pôr do sol
         sun_info = get_sunrise_sunset_info(icaocode)
         if "error" in sun_info:
             context["error"] = sun_info["error"]
             return render(request, 'aisweb/aerodrome.html', context)
         context.update(sun_info)
 
-        # Get METAR and TAF info
+        # Pega informações METAR e TAF
         metar_taf_info = get_metar_taf(icaocode)
         if "error" in metar_taf_info:
             context["error"] = metar_taf_info["error"]
             return render(request, 'aisweb/aerodrome.html', context)
         context.update(metar_taf_info)
 
-        # Get card information
+        # Pega informações dos cartões aeronáuticos
         cards = get_card_info(icaocode)
         if "error" in cards:
             context["error"] = cards["error"]
@@ -173,5 +173,3 @@ def get_aerodrome_info(request):
         return render(request, 'aisweb/aerodrome.html', context)
 
     return render(request, 'aisweb/aerodrome.html')
-
-
